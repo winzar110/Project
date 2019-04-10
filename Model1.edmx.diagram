@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d7837a7b591043f3a9b67c730ae18ee8" Name="Diagram1">
+        <EntityTypeShape EntityType="TruckingIndustryModel.Весовая_категория" Width="1.5" PointX="4.75" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TruckingIndustryModel.Клиенты" Width="1.5" PointX="0.625" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TruckingIndustryModel.Посылки" Width="1.5" PointX="2.875" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TruckingIndustryModel.Тарифы" Width="1.5" PointX="0.625" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TruckingIndustryModel.Шаблоны" Width="1.5" PointX="5.125" PointY="3" IsExpanded="true" />
+        <AssociationConnector Association="TruckingIndustryModel.FK_Посылки_Клиенты" ManuallyRouted="false" />
+        <AssociationConnector Association="TruckingIndustryModel.FK_Шаблоны_Клиенты" ManuallyRouted="false" />
+        <AssociationConnector Association="TruckingIndustryModel.FK_Посылки_Тарифы" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

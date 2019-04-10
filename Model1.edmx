@@ -1,0 +1,429 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище TruckingIndustryModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Весовая_категория">
+          <Key>
+            <PropertyRef Name="Id_Категории" />
+          </Key>
+          <Property Name="Id_Категории" Type="int" Nullable="false" />
+          <Property Name="От" Type="float" />
+          <Property Name="До" Type="float" />
+          <Property Name="Весовая_категория" Type="nvarchar" MaxLength="50" />
+          <Property Name="Стоимость" Type="int" />
+        </EntityType>
+        <EntityType Name="Клиенты">
+          <Key>
+            <PropertyRef Name="ID_Клиента" />
+          </Key>
+          <Property Name="ID_Клиента" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ФИО" Type="nvarchar" MaxLength="255" />
+          <Property Name="Электронная почта" Type="nvarchar" MaxLength="255" />
+          <Property Name="Логин пользователя" Type="nvarchar" MaxLength="255" />
+          <Property Name="Пароль" Type="nvarchar" MaxLength="255" />
+          <Property Name="Адрес" Type="nvarchar" MaxLength="255" />
+          <Property Name="Номер телефона" Type="int" />
+        </EntityType>
+        <EntityType Name="Посылки">
+          <Key>
+            <PropertyRef Name="id_Посылки" />
+          </Key>
+          <Property Name="id_Посылки" Type="int" Nullable="false" />
+          <Property Name="Id_Клиента" Type="int" />
+          <Property Name="Начальный пункт посылки" Type="nvarchar" MaxLength="255" />
+          <Property Name="Конечный пункт посылки" Type="int" />
+          <Property Name="Вес посылки" Type="float" />
+          <Property Name="Объем посылки " Type="float" />
+          <Property Name="Ширина" Type="float" />
+          <Property Name="Высота" Type="float" />
+          <Property Name="Длина" Type="float" />
+          <Property Name="Статус груза" Type="bit" />
+          <Property Name="Стоимость" Type="int" />
+          <Property Name="ВесоваяКатегория" Type="int" />
+        </EntityType>
+        <EntityType Name="Тарифы">
+          <Key>
+            <PropertyRef Name="Id_Тарифа" />
+          </Key>
+          <Property Name="Id_Тарифа" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Город" Type="varchar" MaxLength="50" />
+          <Property Name="Тариф" Type="float" />
+        </EntityType>
+        <EntityType Name="Шаблоны">
+          <Key>
+            <PropertyRef Name="id_Шаблона" />
+          </Key>
+          <Property Name="id_Шаблона" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Начальный пункт посылки" Type="nvarchar" MaxLength="255" />
+          <Property Name="Конечный пункт посылки" Type="nvarchar" MaxLength="255" />
+          <Property Name="Вес посылки" Type="float" />
+          <Property Name="Объем посылки" Type="float" />
+          <Property Name="Габариты посылки" Type="float" />
+          <Property Name="Id_Клиента" Type="int" />
+        </EntityType>
+        <Association Name="FK_Посылки_Клиенты">
+          <End Role="Клиенты" Type="Self.Клиенты" Multiplicity="0..1" />
+          <End Role="Посылки" Type="Self.Посылки" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Клиенты">
+              <PropertyRef Name="ID_Клиента" />
+            </Principal>
+            <Dependent Role="Посылки">
+              <PropertyRef Name="Id_Клиента" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Посылки_Тарифы">
+          <End Role="Тарифы" Type="Self.Тарифы" Multiplicity="0..1" />
+          <End Role="Посылки" Type="Self.Посылки" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Тарифы">
+              <PropertyRef Name="Id_Тарифа" />
+            </Principal>
+            <Dependent Role="Посылки">
+              <PropertyRef Name="Конечный пункт посылки" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Шаблоны_Клиенты">
+          <End Role="Клиенты" Type="Self.Клиенты" Multiplicity="0..1" />
+          <End Role="Шаблоны" Type="Self.Шаблоны" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Клиенты">
+              <PropertyRef Name="ID_Клиента" />
+            </Principal>
+            <Dependent Role="Шаблоны">
+              <PropertyRef Name="Id_Клиента" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="Klienty_Select" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID" Type="int" Mode="In" />
+          <Parameter Name="FIO" Type="nvarchar" Mode="In" />
+          <Parameter Name="mail" Type="nvarchar" Mode="In" />
+          <Parameter Name="login" Type="nvarchar" Mode="In" />
+          <Parameter Name="password" Type="nvarchar" Mode="In" />
+          <Parameter Name="adres" Type="nvarchar" Mode="In" />
+          <Parameter Name="nubmer" Type="int" Mode="In" />
+        </Function>
+        <Function Name="shablon_Select" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID" Type="int" Mode="In" />
+          <Parameter Name="nach" Type="nvarchar" Mode="In" />
+          <Parameter Name="konech" Type="nvarchar" Mode="In" />
+          <Parameter Name="ves" Type="float" Mode="In" />
+          <Parameter Name="objem" Type="float" Mode="In" />
+          <Parameter Name="gabarity" Type="float" Mode="In" />
+        </Function>
+        <Function Name="zakazy_Select" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID" Type="int" Mode="In" />
+          <Parameter Name="klient" Type="nvarchar" Mode="In" />
+          <Parameter Name="kolvo" Type="nvarchar" Mode="In" />
+          <Parameter Name="summa" Type="float" Mode="In" />
+        </Function>
+        <EntityContainer Name="Хранилище TruckingIndustryModelContainer">
+          <EntitySet Name="Весовая_категория" EntityType="Self.Весовая_категория" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Клиенты" EntityType="Self.Клиенты" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Посылки" EntityType="Self.Посылки" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Тарифы" EntityType="Self.Тарифы" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Шаблоны" EntityType="Self.Шаблоны" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Посылки_Клиенты" Association="Self.FK_Посылки_Клиенты">
+            <End Role="Клиенты" EntitySet="Клиенты" />
+            <End Role="Посылки" EntitySet="Посылки" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Посылки_Тарифы" Association="Self.FK_Посылки_Тарифы">
+            <End Role="Тарифы" EntitySet="Тарифы" />
+            <End Role="Посылки" EntitySet="Посылки" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Шаблоны_Клиенты" Association="Self.FK_Шаблоны_Клиенты">
+            <End Role="Клиенты" EntitySet="Клиенты" />
+            <End Role="Шаблоны" EntitySet="Шаблоны" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TruckingIndustryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Весовая_категория">
+          <Key>
+            <PropertyRef Name="Id_Категории" />
+          </Key>
+          <Property Name="Id_Категории" Type="Int32" Nullable="false" />
+          <Property Name="От" Type="Double" />
+          <Property Name="До" Type="Double" />
+          <Property Name="Весовая_категория1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Стоимость" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Клиенты">
+          <Key>
+            <PropertyRef Name="ID_Клиента" />
+          </Key>
+          <Property Name="ID_Клиента" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ФИО" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Электронная_почта" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Логин_пользователя" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Пароль" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Адрес" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Номер_телефона" Type="Int32" />
+          <NavigationProperty Name="Посылки" Relationship="Self.FK_Посылки_Клиенты" FromRole="Клиенты" ToRole="Посылки" />
+          <NavigationProperty Name="Шаблоны" Relationship="Self.FK_Шаблоны_Клиенты" FromRole="Клиенты" ToRole="Шаблоны" />
+        </EntityType>
+        <EntityType Name="Посылки">
+          <Key>
+            <PropertyRef Name="id_Посылки" />
+          </Key>
+          <Property Name="id_Посылки" Type="Int32" Nullable="false" />
+          <Property Name="Id_Клиента" Type="Int32" />
+          <Property Name="Начальный_пункт_посылки" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Конечный_пункт_посылки" Type="Int32" />
+          <Property Name="Вес_посылки" Type="Double" />
+          <Property Name="Объем_посылки_" Type="Double" />
+          <Property Name="Ширина" Type="Double" />
+          <Property Name="Высота" Type="Double" />
+          <Property Name="Длина" Type="Double" />
+          <Property Name="Статус_груза" Type="Boolean" />
+          <Property Name="Стоимость" Type="Int32" />
+          <Property Name="ВесоваяКатегория" Type="Int32" />
+          <NavigationProperty Name="Клиенты" Relationship="Self.FK_Посылки_Клиенты" FromRole="Посылки" ToRole="Клиенты" />
+          <NavigationProperty Name="Тарифы" Relationship="Self.FK_Посылки_Тарифы" FromRole="Посылки" ToRole="Тарифы" />
+        </EntityType>
+        <EntityType Name="Тарифы">
+          <Key>
+            <PropertyRef Name="Id_Тарифа" />
+          </Key>
+          <Property Name="Id_Тарифа" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Город" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Тариф" Type="Double" />
+          <NavigationProperty Name="Посылки" Relationship="Self.FK_Посылки_Тарифы" FromRole="Тарифы" ToRole="Посылки" />
+        </EntityType>
+        <EntityType Name="Шаблоны">
+          <Key>
+            <PropertyRef Name="id_Шаблона" />
+          </Key>
+          <Property Name="id_Шаблона" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Начальный_пункт_посылки" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Конечный_пункт_посылки" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Вес_посылки" Type="Double" />
+          <Property Name="Объем_посылки" Type="Double" />
+          <Property Name="Габариты_посылки" Type="Double" />
+          <Property Name="Id_Клиента" Type="Int32" />
+          <NavigationProperty Name="Клиенты" Relationship="Self.FK_Шаблоны_Клиенты" FromRole="Шаблоны" ToRole="Клиенты" />
+        </EntityType>
+        <Association Name="FK_Посылки_Клиенты">
+          <End Role="Клиенты" Type="Self.Клиенты" Multiplicity="0..1" />
+          <End Role="Посылки" Type="Self.Посылки" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Клиенты">
+              <PropertyRef Name="ID_Клиента" />
+            </Principal>
+            <Dependent Role="Посылки">
+              <PropertyRef Name="Id_Клиента" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Шаблоны_Клиенты">
+          <End Role="Клиенты" Type="Self.Клиенты" Multiplicity="0..1" />
+          <End Role="Шаблоны" Type="Self.Шаблоны" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Клиенты">
+              <PropertyRef Name="ID_Клиента" />
+            </Principal>
+            <Dependent Role="Шаблоны">
+              <PropertyRef Name="Id_Клиента" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Посылки_Тарифы">
+          <End Role="Тарифы" Type="Self.Тарифы" Multiplicity="0..1" />
+          <End Role="Посылки" Type="Self.Посылки" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Тарифы">
+              <PropertyRef Name="Id_Тарифа" />
+            </Principal>
+            <Dependent Role="Посылки">
+              <PropertyRef Name="Конечный_пункт_посылки" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TruckingIndustryEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Весовая_категория" EntityType="Self.Весовая_категория" />
+          <EntitySet Name="Клиенты" EntityType="Self.Клиенты" />
+          <EntitySet Name="Посылки" EntityType="Self.Посылки" />
+          <EntitySet Name="Тарифы" EntityType="Self.Тарифы" />
+          <EntitySet Name="Шаблоны" EntityType="Self.Шаблоны" />
+          <AssociationSet Name="FK_Посылки_Клиенты" Association="Self.FK_Посылки_Клиенты">
+            <End Role="Клиенты" EntitySet="Клиенты" />
+            <End Role="Посылки" EntitySet="Посылки" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Шаблоны_Клиенты" Association="Self.FK_Шаблоны_Клиенты">
+            <End Role="Клиенты" EntitySet="Клиенты" />
+            <End Role="Шаблоны" EntitySet="Шаблоны" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Посылки_Тарифы" Association="Self.FK_Посылки_Тарифы">
+            <End Role="Тарифы" EntitySet="Тарифы" />
+            <End Role="Посылки" EntitySet="Посылки" />
+          </AssociationSet>
+          <FunctionImport Name="Klienty_Select" ReturnType="Collection(TruckingIndustryModel.Klienty_Select_Result)">
+            <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="FIO" Mode="In" Type="String" />
+            <Parameter Name="mail" Mode="In" Type="String" />
+            <Parameter Name="login" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
+            <Parameter Name="adres" Mode="In" Type="String" />
+            <Parameter Name="nubmer" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="shablon_Select" ReturnType="Collection(TruckingIndustryModel.shablon_Select_Result)">
+            <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="nach" Mode="In" Type="String" />
+            <Parameter Name="konech" Mode="In" Type="String" />
+            <Parameter Name="ves" Mode="In" Type="Double" />
+            <Parameter Name="objem" Mode="In" Type="Double" />
+            <Parameter Name="gabarity" Mode="In" Type="Double" />
+          </FunctionImport>
+          <FunctionImport Name="zakazy_Select">
+            <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="klient" Mode="In" Type="String" />
+            <Parameter Name="kolvo" Mode="In" Type="String" />
+            <Parameter Name="summa" Mode="In" Type="Double" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="Klienty_Select_Result">
+          <Property Type="Int32" Name="ID_Клиента" Nullable="false" />
+          <Property Type="String" Name="ФИО" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Электронная_почта" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Логин_пользователя" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Пароль" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Адрес" Nullable="true" MaxLength="255" />
+          <Property Type="Int32" Name="Номер_телефона" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="shablon_Select_Result">
+          <Property Type="Int32" Name="id_Шаблона" Nullable="false" />
+          <Property Type="String" Name="Начальный_пункт_посылки" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Конечный_пункт_посылки" Nullable="true" MaxLength="255" />
+          <Property Type="Double" Name="Вес_посылки" Nullable="true" />
+          <Property Type="Double" Name="Объем_посылки" Nullable="true" />
+          <Property Type="Double" Name="Габариты_посылки" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище TruckingIndustryModelContainer" CdmEntityContainer="TruckingIndustryEntities">
+          <EntitySetMapping Name="Весовая_категория">
+            <EntityTypeMapping TypeName="TruckingIndustryModel.Весовая_категория">
+              <MappingFragment StoreEntitySet="Весовая_категория">
+                <ScalarProperty Name="Id_Категории" ColumnName="Id_Категории" />
+                <ScalarProperty Name="От" ColumnName="От" />
+                <ScalarProperty Name="До" ColumnName="До" />
+                <ScalarProperty Name="Весовая_категория1" ColumnName="Весовая_категория" />
+                <ScalarProperty Name="Стоимость" ColumnName="Стоимость" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Клиенты">
+            <EntityTypeMapping TypeName="TruckingIndustryModel.Клиенты">
+              <MappingFragment StoreEntitySet="Клиенты">
+                <ScalarProperty Name="ID_Клиента" ColumnName="ID_Клиента" />
+                <ScalarProperty Name="ФИО" ColumnName="ФИО" />
+                <ScalarProperty Name="Электронная_почта" ColumnName="Электронная почта" />
+                <ScalarProperty Name="Логин_пользователя" ColumnName="Логин пользователя" />
+                <ScalarProperty Name="Пароль" ColumnName="Пароль" />
+                <ScalarProperty Name="Адрес" ColumnName="Адрес" />
+                <ScalarProperty Name="Номер_телефона" ColumnName="Номер телефона" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Посылки">
+            <EntityTypeMapping TypeName="TruckingIndustryModel.Посылки">
+              <MappingFragment StoreEntitySet="Посылки">
+                <ScalarProperty Name="id_Посылки" ColumnName="id_Посылки" />
+                <ScalarProperty Name="Id_Клиента" ColumnName="Id_Клиента" />
+                <ScalarProperty Name="Начальный_пункт_посылки" ColumnName="Начальный пункт посылки" />
+                <ScalarProperty Name="Конечный_пункт_посылки" ColumnName="Конечный пункт посылки" />
+                <ScalarProperty Name="Вес_посылки" ColumnName="Вес посылки" />
+                <ScalarProperty Name="Объем_посылки_" ColumnName="Объем посылки " />
+                <ScalarProperty Name="Ширина" ColumnName="Ширина" />
+                <ScalarProperty Name="Высота" ColumnName="Высота" />
+                <ScalarProperty Name="Длина" ColumnName="Длина" />
+                <ScalarProperty Name="Статус_груза" ColumnName="Статус груза" />
+                <ScalarProperty Name="Стоимость" ColumnName="Стоимость" />
+                <ScalarProperty Name="ВесоваяКатегория" ColumnName="ВесоваяКатегория" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Тарифы">
+            <EntityTypeMapping TypeName="TruckingIndustryModel.Тарифы">
+              <MappingFragment StoreEntitySet="Тарифы">
+                <ScalarProperty Name="Id_Тарифа" ColumnName="Id_Тарифа" />
+                <ScalarProperty Name="Город" ColumnName="Город" />
+                <ScalarProperty Name="Тариф" ColumnName="Тариф" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Шаблоны">
+            <EntityTypeMapping TypeName="TruckingIndustryModel.Шаблоны">
+              <MappingFragment StoreEntitySet="Шаблоны">
+                <ScalarProperty Name="id_Шаблона" ColumnName="id_Шаблона" />
+                <ScalarProperty Name="Начальный_пункт_посылки" ColumnName="Начальный пункт посылки" />
+                <ScalarProperty Name="Конечный_пункт_посылки" ColumnName="Конечный пункт посылки" />
+                <ScalarProperty Name="Вес_посылки" ColumnName="Вес посылки" />
+                <ScalarProperty Name="Объем_посылки" ColumnName="Объем посылки" />
+                <ScalarProperty Name="Габариты_посылки" ColumnName="Габариты посылки" />
+                <ScalarProperty Name="Id_Клиента" ColumnName="Id_Клиента" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Klienty_Select" FunctionName="Хранилище TruckingIndustryModel.Klienty_Select">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TruckingIndustryModel.Klienty_Select_Result">
+                <ScalarProperty Name="ID_Клиента" ColumnName="ID_Клиента" />
+                <ScalarProperty Name="ФИО" ColumnName="ФИО" />
+                <ScalarProperty Name="Электронная_почта" ColumnName="Электронная почта" />
+                <ScalarProperty Name="Логин_пользователя" ColumnName="Логин пользователя" />
+                <ScalarProperty Name="Пароль" ColumnName="Пароль" />
+                <ScalarProperty Name="Адрес" ColumnName="Адрес" />
+                <ScalarProperty Name="Номер_телефона" ColumnName="Номер телефона" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="shablon_Select" FunctionName="Хранилище TruckingIndustryModel.shablon_Select">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TruckingIndustryModel.shablon_Select_Result">
+                <ScalarProperty Name="id_Шаблона" ColumnName="id_Шаблона" />
+                <ScalarProperty Name="Начальный_пункт_посылки" ColumnName="Начальный пункт посылки" />
+                <ScalarProperty Name="Конечный_пункт_посылки" ColumnName="Конечный пункт посылки" />
+                <ScalarProperty Name="Вес_посылки" ColumnName="Вес посылки" />
+                <ScalarProperty Name="Объем_посылки" ColumnName="Объем посылки" />
+                <ScalarProperty Name="Габариты_посылки" ColumnName="Габариты посылки" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="zakazy_Select" FunctionName="Хранилище TruckingIndustryModel.zakazy_Select" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

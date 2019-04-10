@@ -1,0 +1,504 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище TruckingIndustryModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Clients">
+          <Key>
+            <PropertyRef Name="Login" />
+          </Key>
+          <Property Name="Login" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="255" />
+          <Property Name="Password" Type="nvarchar" MaxLength="255" />
+          <Property Name="Adress" Type="nvarchar" MaxLength="255" />
+          <Property Name="Phone number" Type="int" />
+        </EntityType>
+        <EntityType Name="package">
+          <Key>
+            <PropertyRef Name="id_&#xD;&#xA;package" />
+          </Key>
+          <Property Name="id_&#xD;&#xA;package" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Starting point of the package" Type="nvarchar" MaxLength="255" />
+          <Property Name="Final destination of package" Type="int" />
+          <Property Name="Weight parcel" Type="float" />
+          <Property Name="Volume package" Type="float" />
+          <Property Name="Width" Type="float" />
+          <Property Name="Height" Type="float" />
+          <Property Name="Length" Type="float" />
+          <Property Name="Status cargo" Type="bit" />
+          <Property Name="Cost" Type="int" />
+          <Property Name="Weight category" Type="int" />
+          <Property Name="Login" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Tariff">
+          <Key>
+            <PropertyRef Name="Id_Tariffa" />
+          </Key>
+          <Property Name="Id_Tariffa" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="City" Type="varchar" MaxLength="50" />
+          <Property Name="Tariff" Type="numeric" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="Templates">
+          <Key>
+            <PropertyRef Name="id_pattern" />
+          </Key>
+          <Property Name="id_pattern" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Loign" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Starting point of the package" Type="nvarchar" MaxLength="50" />
+          <Property Name="Final destination of package" Type="int" />
+          <Property Name="Weight parcel" Type="float" />
+          <Property Name="Volume Package" Type="float" />
+          <Property Name="Dimensions Package" Type="float" />
+        </EntityType>
+        <EntityType Name="Weight_category">
+          <Key>
+            <PropertyRef Name="Id_Categories" />
+          </Key>
+          <Property Name="Id_Categories" Type="int" Nullable="false" />
+          <Property Name="from" Type="float" />
+          <Property Name="before" Type="float" />
+          <Property Name="Weight category" Type="nvarchar" MaxLength="50" />
+          <Property Name="Cost" Type="int" />
+        </EntityType>
+        <Association Name="FK_package_Clients">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="0..1" />
+          <End Role="package" Type="Self.package" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="Login" />
+            </Principal>
+            <Dependent Role="package">
+              <PropertyRef Name="Login" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Templates_Clients">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+          <End Role="Templates" Type="Self.Templates" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="Login" />
+            </Principal>
+            <Dependent Role="Templates">
+              <PropertyRef Name="Loign" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Посылки_Тарифы">
+          <End Role="Tariff" Type="Self.Tariff" Multiplicity="0..1" />
+          <End Role="package" Type="Self.package" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tariff">
+              <PropertyRef Name="Id_Tariffa" />
+            </Principal>
+            <Dependent Role="package">
+              <PropertyRef Name="Final destination of package" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="Cat_Select" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ves" Type="int" Mode="In" />
+        </Function>
+        <Function Name="klienty_Ins" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fio" Type="nvarchar" Mode="In" />
+          <Parameter Name="mail" Type="nvarchar" Mode="In" />
+          <Parameter Name="login" Type="nvarchar" Mode="In" />
+          <Parameter Name="pas" Type="nvarchar" Mode="In" />
+          <Parameter Name="adres" Type="nvarchar" Mode="In" />
+          <Parameter Name="number" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Klienty_Select" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID" Type="int" Mode="In" />
+          <Parameter Name="FIO" Type="nvarchar" Mode="In" />
+          <Parameter Name="mail" Type="nvarchar" Mode="In" />
+          <Parameter Name="login" Type="nvarchar" Mode="In" />
+          <Parameter Name="password" Type="nvarchar" Mode="In" />
+          <Parameter Name="adres" Type="nvarchar" Mode="In" />
+          <Parameter Name="nubmer" Type="int" Mode="In" />
+        </Function>
+        <Function Name="pocylki" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="login" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="pocylki_Ins" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_kl" Type="nvarchar" Mode="In" />
+          <Parameter Name="nach" Type="nvarchar" Mode="In" />
+          <Parameter Name="konch" Type="int" Mode="In" />
+          <Parameter Name="ves" Type="int" Mode="In" />
+          <Parameter Name="objem" Type="float" Mode="In" />
+          <Parameter Name="shirina" Type="float" Mode="In" />
+          <Parameter Name="visota" Type="float" Mode="In" />
+          <Parameter Name="dlina" Type="float" Mode="In" />
+        </Function>
+        <Function Name="SELECT_LP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="login" Type="nvarchar" Mode="In" />
+          <Parameter Name="password" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="shablon_Ins" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_kl" Type="nvarchar" Mode="In" />
+          <Parameter Name="nach" Type="nvarchar" Mode="In" />
+          <Parameter Name="konch" Type="nvarchar" Mode="In" />
+          <Parameter Name="ves" Type="float" Mode="In" />
+          <Parameter Name="objem" Type="float" Mode="In" />
+          <Parameter Name="gabarity" Type="float" Mode="In" />
+        </Function>
+        <Function Name="shablon_Select" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="TARIF_SELECT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="gor" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="zakazy_Select" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID" Type="int" Mode="In" />
+          <Parameter Name="klient" Type="nvarchar" Mode="In" />
+          <Parameter Name="kolvo" Type="nvarchar" Mode="In" />
+          <Parameter Name="summa" Type="float" Mode="In" />
+        </Function>
+        <EntityContainer Name="Хранилище TruckingIndustryModelContainer">
+          <EntitySet Name="Clients" EntityType="Self.Clients" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="package" EntityType="Self.package" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tariff" EntityType="Self.Tariff" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Templates" EntityType="Self.Templates" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Weight_category" EntityType="Self.Weight_category" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_package_Clients" Association="Self.FK_package_Clients">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="package" EntitySet="package" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Templates_Clients" Association="Self.FK_Templates_Clients">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="Templates" EntitySet="Templates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Посылки_Тарифы" Association="Self.FK_Посылки_Тарифы">
+            <End Role="Tariff" EntitySet="Tariff" />
+            <End Role="package" EntitySet="package" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TruckingIndustryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Clients">
+          <Key>
+            <PropertyRef Name="Login" />
+          </Key>
+          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FullName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Adress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Phone_number" Type="Int32" />
+          <NavigationProperty Name="package" Relationship="Self.FK_package_Clients" FromRole="Clients" ToRole="package" />
+          <NavigationProperty Name="Templates" Relationship="Self.FK_Templates_Clients" FromRole="Clients" ToRole="Templates" />
+        </EntityType>
+        <EntityType Name="package">
+          <Key>
+            <PropertyRef Name="id___package" />
+          </Key>
+          <Property Name="id___package" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Starting_point_of_the_package" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Final_destination_of_package" Type="Int32" />
+          <Property Name="Weight_parcel" Type="Double" />
+          <Property Name="Volume_package" Type="Double" />
+          <Property Name="Width" Type="Double" />
+          <Property Name="Height" Type="Double" />
+          <Property Name="Length" Type="Double" />
+          <Property Name="Status_cargo" Type="Boolean" />
+          <Property Name="Cost" Type="Int32" />
+          <Property Name="Weight_category" Type="Int32" />
+          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Clients" Relationship="Self.FK_package_Clients" FromRole="package" ToRole="Clients" />
+          <NavigationProperty Name="Tariff" Relationship="Self.FK_Посылки_Тарифы" FromRole="package" ToRole="Tariff" />
+        </EntityType>
+        <EntityType Name="Tariff">
+          <Key>
+            <PropertyRef Name="Id_Tariffa" />
+          </Key>
+          <Property Name="Id_Tariffa" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Tariff1" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="package" Relationship="Self.FK_Посылки_Тарифы" FromRole="Tariff" ToRole="package" />
+        </EntityType>
+        <EntityType Name="Templates">
+          <Key>
+            <PropertyRef Name="id_pattern" />
+          </Key>
+          <Property Name="id_pattern" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Loign" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Starting_point_of_the_package" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Final_destination_of_package" Type="Int32" />
+          <Property Name="Weight_parcel" Type="Double" />
+          <Property Name="Volume_Package" Type="Double" />
+          <Property Name="Dimensions_Package" Type="Double" />
+          <NavigationProperty Name="Clients" Relationship="Self.FK_Templates_Clients" FromRole="Templates" ToRole="Clients" />
+        </EntityType>
+        <EntityType Name="Weight_category">
+          <Key>
+            <PropertyRef Name="Id_Categories" />
+          </Key>
+          <Property Name="Id_Categories" Type="Int32" Nullable="false" />
+          <Property Name="from" Type="Double" />
+          <Property Name="before" Type="Double" />
+          <Property Name="Weight_category1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Cost" Type="Int32" />
+        </EntityType>
+        <Association Name="FK_package_Clients">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="0..1" />
+          <End Role="package" Type="Self.package" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="Login" />
+            </Principal>
+            <Dependent Role="package">
+              <PropertyRef Name="Login" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Templates_Clients">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+          <End Role="Templates" Type="Self.Templates" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="Login" />
+            </Principal>
+            <Dependent Role="Templates">
+              <PropertyRef Name="Loign" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Посылки_Тарифы">
+          <End Role="Tariff" Type="Self.Tariff" Multiplicity="0..1" />
+          <End Role="package" Type="Self.package" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tariff">
+              <PropertyRef Name="Id_Tariffa" />
+            </Principal>
+            <Dependent Role="package">
+              <PropertyRef Name="Final_destination_of_package" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TruckingIndustryEntities8" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Clients" EntityType="Self.Clients" />
+          <EntitySet Name="package" EntityType="Self.package" />
+          <EntitySet Name="Tariff" EntityType="Self.Tariff" />
+          <EntitySet Name="Templates" EntityType="Self.Templates" />
+          <EntitySet Name="Weight_category" EntityType="Self.Weight_category" />
+          <AssociationSet Name="FK_package_Clients" Association="Self.FK_package_Clients">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="package" EntitySet="package" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Templates_Clients" Association="Self.FK_Templates_Clients">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="Templates" EntitySet="Templates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Посылки_Тарифы" Association="Self.FK_Посылки_Тарифы">
+            <End Role="Tariff" EntitySet="Tariff" />
+            <End Role="package" EntitySet="package" />
+          </AssociationSet>
+          <FunctionImport Name="Cat_Select" ReturnType="Collection(Int32)">
+          <Parameter Name="ves" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="klienty_Ins">
+            <Parameter Name="fio" Mode="In" Type="String" />
+            <Parameter Name="mail" Mode="In" Type="String" />
+            <Parameter Name="login" Mode="In" Type="String" />
+            <Parameter Name="pas" Mode="In" Type="String" />
+            <Parameter Name="adres" Mode="In" Type="String" />
+            <Parameter Name="number" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Klienty_Select">
+            <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="FIO" Mode="In" Type="String" />
+            <Parameter Name="mail" Mode="In" Type="String" />
+            <Parameter Name="login" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
+            <Parameter Name="adres" Mode="In" Type="String" />
+            <Parameter Name="nubmer" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="pocylki" ReturnType="Collection(TruckingIndustryModel.pocylki_Result)">
+          <Parameter Name="login" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="pocylki_Ins">
+            <Parameter Name="id_kl" Mode="In" Type="String" />
+            <Parameter Name="nach" Mode="In" Type="String" />
+            <Parameter Name="konch" Mode="In" Type="Int32" />
+            <Parameter Name="ves" Mode="In" Type="Int32" />
+            <Parameter Name="objem" Mode="In" Type="Double" />
+            <Parameter Name="shirina" Mode="In" Type="Double" />
+            <Parameter Name="visota" Mode="In" Type="Double" />
+            <Parameter Name="dlina" Mode="In" Type="Double" />
+          </FunctionImport>
+          <FunctionImport Name="SELECT_LP" ReturnType="Collection(String)">
+            <Parameter Name="login" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="shablon_Ins">
+            <Parameter Name="id_kl" Mode="In" Type="String" />
+            <Parameter Name="nach" Mode="In" Type="String" />
+            <Parameter Name="konch" Mode="In" Type="String" />
+            <Parameter Name="ves" Mode="In" Type="Double" />
+            <Parameter Name="objem" Mode="In" Type="Double" />
+            <Parameter Name="gabarity" Mode="In" Type="Double" />
+          </FunctionImport>
+          <FunctionImport Name="shablon_Select" ReturnType="Collection(TruckingIndustryModel.shablon_Select_Result)">
+          <Parameter Name="ID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="TARIF_SELECT" ReturnType="Collection(Decimal)">
+          <Parameter Name="gor" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="zakazy_Select">
+            <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="klient" Mode="In" Type="String" />
+            <Parameter Name="kolvo" Mode="In" Type="String" />
+            <Parameter Name="summa" Mode="In" Type="Double" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="pocylki_Result">
+          <Property Type="String" Name="Начальный_пункт_посылки" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Конечный_пункт_посылки" Nullable="true" MaxLength="50" />
+          <Property Type="Double" Name="Вес_посылки" Nullable="true" />
+          <Property Type="Double" Name="Объем_посылки" Nullable="true" />
+          <Property Type="Double" Name="Ширина" Nullable="true" />
+          <Property Type="Double" Name="Высота" Nullable="true" />
+          <Property Type="Double" Name="Длина" Nullable="true" />
+          <Property Type="Boolean" Name="Статус_груза" Nullable="true" />
+          <Property Type="Int32" Name="Стоимость" Nullable="true" />
+          <Property Type="Int32" Name="Весовая_категория" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="shablon_Select_Result">
+          <Property Type="String" Name="Начальный_пункт_посылки" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="Конечный_пункт_посылки" Nullable="true" />
+          <Property Type="Double" Name="Вес_посылки" Nullable="true" />
+          <Property Type="Double" Name="Объем_посылки" Nullable="true" />
+          <Property Type="Double" Name="Габариты_посылки" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище TruckingIndustryModelContainer" CdmEntityContainer="TruckingIndustryEntities8">
+          <EntitySetMapping Name="Clients">
+            <EntityTypeMapping TypeName="TruckingIndustryModel.Clients">
+              <MappingFragment StoreEntitySet="Clients">
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Adress" ColumnName="Adress" />
+                <ScalarProperty Name="Phone_number" ColumnName="Phone number" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="package">
+            <EntityTypeMapping TypeName="TruckingIndustryModel.package">
+              <MappingFragment StoreEntitySet="package">
+                <ScalarProperty Name="id___package" ColumnName="id_&#xD;&#xA;package" />
+                <ScalarProperty Name="Starting_point_of_the_package" ColumnName="Starting point of the package" />
+                <ScalarProperty Name="Final_destination_of_package" ColumnName="Final destination of package" />
+                <ScalarProperty Name="Weight_parcel" ColumnName="Weight parcel" />
+                <ScalarProperty Name="Volume_package" ColumnName="Volume package" />
+                <ScalarProperty Name="Width" ColumnName="Width" />
+                <ScalarProperty Name="Height" ColumnName="Height" />
+                <ScalarProperty Name="Length" ColumnName="Length" />
+                <ScalarProperty Name="Status_cargo" ColumnName="Status cargo" />
+                <ScalarProperty Name="Cost" ColumnName="Cost" />
+                <ScalarProperty Name="Weight_category" ColumnName="Weight category" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tariff">
+            <EntityTypeMapping TypeName="TruckingIndustryModel.Tariff">
+              <MappingFragment StoreEntitySet="Tariff">
+                <ScalarProperty Name="Id_Tariffa" ColumnName="Id_Tariffa" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Tariff1" ColumnName="Tariff" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Templates">
+            <EntityTypeMapping TypeName="TruckingIndustryModel.Templates">
+              <MappingFragment StoreEntitySet="Templates">
+                <ScalarProperty Name="id_pattern" ColumnName="id_pattern" />
+                <ScalarProperty Name="Loign" ColumnName="Loign" />
+                <ScalarProperty Name="Starting_point_of_the_package" ColumnName="Starting point of the package" />
+                <ScalarProperty Name="Final_destination_of_package" ColumnName="Final destination of package" />
+                <ScalarProperty Name="Weight_parcel" ColumnName="Weight parcel" />
+                <ScalarProperty Name="Volume_Package" ColumnName="Volume Package" />
+                <ScalarProperty Name="Dimensions_Package" ColumnName="Dimensions Package" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Weight_category">
+            <EntityTypeMapping TypeName="TruckingIndustryModel.Weight_category">
+              <MappingFragment StoreEntitySet="Weight_category">
+                <ScalarProperty Name="Id_Categories" ColumnName="Id_Categories" />
+                <ScalarProperty Name="from" ColumnName="from" />
+                <ScalarProperty Name="before" ColumnName="before" />
+                <ScalarProperty Name="Weight_category1" ColumnName="Weight category" />
+                <ScalarProperty Name="Cost" ColumnName="Cost" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Cat_Select" FunctionName="Хранилище TruckingIndustryModel.Cat_Select" />
+          <FunctionImportMapping FunctionImportName="klienty_Ins" FunctionName="Хранилище TruckingIndustryModel.klienty_Ins" />
+          <FunctionImportMapping FunctionImportName="Klienty_Select" FunctionName="Хранилище TruckingIndustryModel.Klienty_Select" />
+          <FunctionImportMapping FunctionImportName="pocylki" FunctionName="Хранилище TruckingIndustryModel.pocylki">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TruckingIndustryModel.pocylki_Result">
+                <ScalarProperty Name="Начальный_пункт_посылки" ColumnName="Начальный_пункт_посылки" />
+                <ScalarProperty Name="Конечный_пункт_посылки" ColumnName="Конечный_пункт_посылки" />
+                <ScalarProperty Name="Вес_посылки" ColumnName="Вес_посылки" />
+                <ScalarProperty Name="Объем_посылки" ColumnName="Объем_посылки" />
+                <ScalarProperty Name="Ширина" ColumnName="Ширина" />
+                <ScalarProperty Name="Высота" ColumnName="Высота" />
+                <ScalarProperty Name="Длина" ColumnName="Длина" />
+                <ScalarProperty Name="Статус_груза" ColumnName="Статус_груза" />
+                <ScalarProperty Name="Стоимость" ColumnName="Стоимость" />
+                <ScalarProperty Name="Весовая_категория" ColumnName="Весовая_категория" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="pocylki_Ins" FunctionName="Хранилище TruckingIndustryModel.pocylki_Ins" />
+          <FunctionImportMapping FunctionImportName="SELECT_LP" FunctionName="Хранилище TruckingIndustryModel.SELECT_LP" />
+          <FunctionImportMapping FunctionImportName="shablon_Ins" FunctionName="Хранилище TruckingIndustryModel.shablon_Ins" />
+          <FunctionImportMapping FunctionImportName="shablon_Select" FunctionName="Хранилище TruckingIndustryModel.shablon_Select">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TruckingIndustryModel.shablon_Select_Result">
+                <ScalarProperty Name="Начальный_пункт_посылки" ColumnName="Начальный_пункт_посылки" />
+                <ScalarProperty Name="Конечный_пункт_посылки" ColumnName="Конечный_пункт_посылки" />
+                <ScalarProperty Name="Вес_посылки" ColumnName="Вес_посылки" />
+                <ScalarProperty Name="Объем_посылки" ColumnName="Объем_посылки" />
+                <ScalarProperty Name="Габариты_посылки" ColumnName="Габариты_посылки" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="TARIF_SELECT" FunctionName="Хранилище TruckingIndustryModel.TARIF_SELECT" />
+          <FunctionImportMapping FunctionImportName="zakazy_Select" FunctionName="Хранилище TruckingIndustryModel.zakazy_Select" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
